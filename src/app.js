@@ -34,8 +34,13 @@ app.use((req, res, next) => {
   next();
 });
 
+const authRoutes = require('./routes/authRoutes');
+const stationRoutes = require('./routes/stationRoutes');
+
 // API routes
 app.use('/api/health', healthRoutes);
+app.use('/api/auth', authRoutes);
+app.use('/api/stations', stationRoutes);
 
 // Welcome route
 app.get('/', (req, res) => {
