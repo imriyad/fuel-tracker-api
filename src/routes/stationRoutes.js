@@ -7,8 +7,8 @@ router.get('/', getStations);
 router.get('/:id', getStationById);
 
 // Protected Admin Routes
-router.post('/', protect, authorize('admin', 'admin'), createStation);
-router.put('/:id', protect, authorize('admin', 'admin'), updateStation);
-router.delete('/:id', protect, authorize('admin', 'admin'), deleteStation);
+router.post('/', protect, authorize('admin'), createStation);
+router.put('/:id', protect, authorize('admin'), updateStation);
+router.delete('/:id', protect, authorize('admin'), deleteStation);
 
 module.exports = router;
