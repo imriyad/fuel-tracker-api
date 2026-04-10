@@ -39,6 +39,7 @@ const initDb = async () => {
         availability VARCHAR(20) NOT NULL CHECK (availability IN ('In Stock', 'Low', 'Out')),
         latitude DECIMAL(9, 6),
         longitude DECIMAL(9, 6),
+        map_url TEXT,
         created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
       );
@@ -49,16 +50,16 @@ const initDb = async () => {
     const stationsCount = await query('SELECT COUNT(*) FROM fuel_stations;');
     if (parseInt(stationsCount.rows[0].count) === 0) {
       const initialStations = [
-        ['Shell Premium Express', '124 Market St, San Francisco, CA', 'Petrol', 1.42, 'In Stock'],
-        ['BP Global Station', '455 Mission St, San Francisco, CA', 'Petrol', 1.38, 'Low'],
-        ['Chevron Central', '890 Geary Blvd, San Francisco, CA', 'Diesel', 1.45, 'In Stock'],
-        ['7-Eleven Fuel', '221 Turk St, San Francisco, CA', 'Petrol', 1.35, 'Out']
+        ['Shell Premium Express', '124 Market St, San Francisco, CA', 'Petrol', 1.42, 'In Stock', 'https://maps.app.goo.gl/9uT2pG5m5YjGvXpD8'],
+        ['BP Global Station', '455 Mission St, San Francisco, CA', 'Petrol', 1.38, 'Low', 'https://maps.app.goo.gl/9uT2pG5m5YjGvXpD8'],
+        ['Chevron Central', '890 Geary Blvd, San Francisco, CA', 'Diesel', 1.45, 'In Stock', 'https://maps.app.goo.gl/9uT2pG5m5YjGvXpD8'],
+        ['7-Eleven Fuel', '221 Turk St, San Francisco, CA', 'Petrol', 1.35, 'Out', 'https://maps.app.goo.gl/9uT2pG5m5YjGvXpD8']
       ];
 
-      for (const [name, loc, type, price, avail] of initialStations) {
+      for (const [name, loc, type, price, avail, map_url] of initialStations) {
         await query(
-          'INSERT INTO fuel_stations (name, location, fuel_type, price, availability) VALUES ($1, $2, $3, $4, $5);',
-          [name, loc, type, price, avail]
+          'INSERT INTO fuel_stations (name, location, fuel_type, price, availability, map_url) VALUES ($1, $2, $3, $4, $5, $6);',
+          [name, loc, type, price, avail, map_url]
         );
       }
       console.log('✅ Seeded initial fuel stations.');

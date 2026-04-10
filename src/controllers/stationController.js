@@ -55,12 +55,12 @@ const getStationById = async (req, res) => {
 // @desc    Create station (Admin only)
 // @route   POST /api/stations
 const createStation = async (req, res) => {
-  const { name, location, fuel_type, price, availability, latitude, longitude } = req.body;
+  const { name, location, fuel_type, price, availability, latitude, longitude, map_url } = req.body;
 
   try {
     const result = await query(
-      'INSERT INTO fuel_stations (name, location, fuel_type, price, availability, latitude, longitude) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *',
-      [name, location, fuel_type, price, availability, latitude, longitude]
+      'INSERT INTO fuel_stations (name, location, fuel_type, price, availability, latitude, longitude, map_url) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *',
+      [name, location, fuel_type, price, availability, latitude, longitude, map_url]
     );
     res.status(201).json(result.rows[0]);
   } catch (error) {
@@ -71,13 +71,13 @@ const createStation = async (req, res) => {
 // @desc    Update station (Admin only)
 // @route   PUT /api/stations/:id
 const updateStation = async (req, res) => {
-  const { name, location, fuel_type, price, availability, id } = req.body;
+  const { name, location, fuel_type, price, availability, map_url, id } = req.body;
   const stationId = req.params.id || id;
 
   try {
     const result = await query(
-      'UPDATE fuel_stations SET name = $1, location = $2, fuel_type = $3, price = $4, availability = $5, updated_at = CURRENT_TIMESTAMP WHERE id = $6 RETURNING *',
-      [name, location, fuel_type, price, availability, stationId]
+      'UPDATE fuel_stations SET name = $1, location = $2, fuel_type = $3, price = $4, availability = $5, map_url = $6, updated_at = CURRENT_TIMESTAMP WHERE id = $7 RETURNING *',
+      [name, location, fuel_type, price, availability, map_url, stationId]
     );
     if (result.rows.length === 0) {
        return res.status(404).json({ message: 'Station not found' });
