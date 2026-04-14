@@ -45,6 +45,38 @@ const initDb = async () => {
       );
     `);
     console.log('✅ Fuel Stations table ready.');
+    
+    // Create Vehicles table
+    await query(`
+      CREATE TABLE IF NOT EXISTS vehicles (
+        id SERIAL PRIMARY KEY,
+        user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+        make VARCHAR(50) NOT NULL,
+        model VARCHAR(50) NOT NULL,
+        year INTEGER NOT NULL,
+        fuel_type VARCHAR(50) NOT NULL,
+        license_plate VARCHAR(20),
+        created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+      );
+    `);
+    console.log('✅ Vehicles table ready.');
+
+    // Create Fuel Entries table
+    await query(`
+      CREATE TABLE IF NOT EXISTS fuel_entries (
+        id SERIAL PRIMARY KEY,
+        user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+        vehicle_id INTEGER REFERENCES vehicles(id) ON DELETE CASCADE,
+        station_id INTEGER REFERENCES fuel_stations(id) ON DELETE SET NULL,
+        entry_date DATE DEFAULT CURRENT_DATE,
+        liters DECIMAL(10, 2) NOT NULL,
+        price_per_liter DECIMAL(10, 2) NOT NULL,
+        total_cost DECIMAL(10, 2) NOT NULL,
+        odometer INTEGER,
+        created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+      );
+    `);
+    console.log('✅ Fuel Entries table ready.');
 
     // Add some initial fuel stations
     const stationsCount = await query('SELECT COUNT(*) FROM fuel_stations;');

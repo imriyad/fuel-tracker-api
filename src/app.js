@@ -36,11 +36,15 @@ app.use((req, res, next) => {
 
 const authRoutes = require('./routes/authRoutes');
 const stationRoutes = require('./routes/stationRoutes');
+const vehicleRoutes = require('./routes/vehicleRoutes');
+const fuelEntryRoutes = require('./routes/fuelEntryRoutes');
 
-// API routes
-app.use('/api/health', healthRoutes);
+// Mount routes
 app.use('/api/auth', authRoutes);
 app.use('/api/stations', stationRoutes);
+app.use('/api/vehicles', vehicleRoutes);
+app.use('/api/fuel-entries', fuelEntryRoutes);
+app.use('/api/health', healthRoutes);
 
 // Welcome route
 app.get('/', (req, res) => {
